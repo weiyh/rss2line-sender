@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateUtil {
-    public static final String YYYY_MM_DD_HH_MM_SS_TZ = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-    public static final String TIMEZONE = "GMT+8";
+    private static final String YYYY_MM_DD_HH_MM_SS_TZ = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    private static final String TIMEZONE = "GMT+8";
 
     public static Date addHourOffsetToDate(Date calendarDate, int offset) {
         Calendar calendar = Calendar.getInstance();
@@ -21,5 +21,10 @@ public class DateUtil {
         SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_TZ);
         formatter.setTimeZone(TimeZone.getTimeZone(TIMEZONE));
         return formatter.parse(date);
+    }
+
+    public static String formatDateToString(Date date) {
+        SimpleDateFormat formatter = new SimpleDateFormat(YYYY_MM_DD_HH_MM_SS_TZ);
+        return formatter.format(date);
     }
 }
