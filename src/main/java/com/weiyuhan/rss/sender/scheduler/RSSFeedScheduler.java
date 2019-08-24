@@ -41,7 +41,7 @@ public class RSSFeedScheduler {
         feedMessageDTOs.addAll(rssFeedService.parseRSSFeed(URL_3));
         feedMessageDTOs.addAll(rssFeedService.parseRSSFeed(URL_4));
 
-        lineService.pushText(UUID, DateUtil.formatDateToString(new Date()));
+        lineService.pushText(UUID, "rssFeed: " + DateUtil.formatDateToString(new Date()));
         if (hasNewFeedMessage(feedMessageDTOs)) {
             for (FeedMessageDTO feedMessageDTO : feedMessageDTOs) {
                 String message = generateMessage(feedMessageDTO);
