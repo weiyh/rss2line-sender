@@ -1,8 +1,14 @@
 package com.weiyuhan.rss.sender.controller;
 
+import com.linecorp.bot.model.event.FollowEvent;
 import com.linecorp.bot.model.event.MessageEvent;
+import com.linecorp.bot.model.event.message.AudioMessageContent;
+import com.linecorp.bot.model.event.message.ImageMessageContent;
 import com.linecorp.bot.model.event.message.StickerMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
+import com.linecorp.bot.model.event.message.VideoMessageContent;
+import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import com.weiyuhan.rss.sender.service.LineService;
@@ -20,7 +26,7 @@ public class LineEventController {
     private LineService lineService;
 
     @EventMapping
-    public void listenTextMessage(MessageEvent<TextMessageContent> event) {
+    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
         String lineUid = event.getSource().getUserId();
         String replyToken = event.getReplyToken();
         TextMessageContent message = event.getMessage();
@@ -36,7 +42,27 @@ public class LineEventController {
     }
 
     @EventMapping
-    public void listenStickerMessage(MessageEvent<StickerMessageContent> event) {
-        lineService.replySticker(event.getReplyToken(), "2", "179");
+    public Message handleStickerMessage(MessageEvent<StickerMessageContent> event) {
+        return new TextMessage("スタンプ送信ありがとうございます！");
+    }
+
+    @EventMapping
+    public Message handleImageMessage(MessageEvent<ImageMessageContent> event) {
+        return new TextMessage("画像送信ありがとうございます！");
+    }
+
+    @EventMapping
+    public Message handleVideoMessage(MessageEvent<VideoMessageContent> event) {
+        return new TextMessage("動画送信ありがとうございます！");
+    }
+
+    @EventMapping
+    public Message handleAudioMessage(MessageEvent<AudioMessageContent> event) {
+        return new TextMessage("音声送信ありがとうございます！");
+    }
+
+    @EventMapping
+    public Message handleFollowEvent(FollowEvent event) {
+        return new TextMessage("友達追加ありがとうございます！");
     }
 }
