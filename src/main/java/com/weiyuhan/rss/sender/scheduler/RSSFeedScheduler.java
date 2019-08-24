@@ -40,6 +40,7 @@ public class RSSFeedScheduler {
         feedMessageDTOs.addAll(rssFeedService.parseRSSFeed(URL_2));
         feedMessageDTOs.addAll(rssFeedService.parseRSSFeed(URL_3));
         feedMessageDTOs.addAll(rssFeedService.parseRSSFeed(URL_4));
+
         if (hasNewFeedMessage(feedMessageDTOs)) {
             for (FeedMessageDTO feedMessageDTO : feedMessageDTOs) {
                 String message = generateMessage(feedMessageDTO);
