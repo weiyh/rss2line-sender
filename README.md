@@ -1,5 +1,6 @@
 # rss2line-sender
-A LINE Bot which retrieves RSS feeds periodically (every hour) and sends feeds information.
+A LINE Bot which retrieves Google Alerts' RSS feeds periodically (every hour) and sends feeds information to user.
+
 
 ## Reference
 * Judy Ku's LINE Bot codes
