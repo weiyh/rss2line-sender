@@ -36,6 +36,7 @@ public class LineEventController {
             case "hi":
                 String lineEmoji = String.valueOf(Character.toChars(Integer.decode("0x100001")));
                 lineService.replyText(replyToken, "Hi! " + lineEmoji);
+                break;
         }
         return new TextMessage("文字送信ありがとうございます！");
     }
