@@ -27,7 +27,6 @@ public class LineEventController {
 
     @EventMapping
     public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
-        String lineUid = event.getSource().getUserId();
         String replyToken = event.getReplyToken();
         TextMessageContent message = event.getMessage();
         String text = message.getText();
