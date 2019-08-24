@@ -26,18 +26,19 @@ public class LineEventController {
     private LineService lineService;
 
     @EventMapping
-    public void handleTextMessageEvent(MessageEvent<TextMessageContent> event) {
+    public Message handleTextMessage(MessageEvent<TextMessageContent> event) {
         String replyToken = event.getReplyToken();
         TextMessageContent message = event.getMessage();
         String text = message.getText();
-
-        logger.info("Got text message from replyToken:{}: text:{}", replyToken, text);
+        logger.info("Got text message from {}, text:{}", replyToken, text);
 
         switch (text) {
             case "hi":
-                lineService.replyText(replyToken, "Hi!");
+                String lineEmoji = String.valueOf(Character.toChars(Integer.decode("0x100001")));
+                lineService.replyText(replyToken, "Hi! " + lineEmoji);
                 break;
         }
+        return new TextMessage("文字送信ありがとうございます！");
     }
 
     @EventMapping
