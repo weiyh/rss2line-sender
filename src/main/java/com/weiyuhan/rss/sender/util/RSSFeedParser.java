@@ -18,6 +18,7 @@ public class RSSFeedParser {
     private static final String ENTRY = "entry";
 
     private static final String TITLE = "title";
+    private static final String LINK = "link";
     private static final String CONTENT = "content";
     private static final String PUBLISHED_DATE = "published";
 
@@ -44,6 +45,8 @@ public class RSSFeedParser {
                             feedMessageDTO.setTitle(characterData);
 //                            appendBoldStringToPreviousString(event, eventReader, feedMessageDTO);
                             break;
+                        case LINK:
+                            feedMessageDTO.setLink(characterData);
                         case PUBLISHED_DATE:
                             feedMessageDTO.setPublishedDate(characterData);
                             break;

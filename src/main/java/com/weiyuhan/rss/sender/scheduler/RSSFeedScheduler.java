@@ -43,7 +43,8 @@ public class RSSFeedScheduler {
         StringBuilder messageBuilder = new StringBuilder();
         messageBuilder.append("Title: ").append(feedMessageDTO.getTitle()).append("\n")
                 .append("Time: ").append(feedMessageDTO.getPublishedDate()).append("\n")
-                .append("Content: ").append(feedMessageDTO.getContent()).append("\n");
+                .append("Content: ").append(feedMessageDTO.getContent()).append("\n")
+                .append("Link:: ").append(feedMessageDTO.getContent()).append("\n");
         return messageBuilder.toString();
     }
 

@@ -2,6 +2,7 @@ package com.weiyuhan.rss.sender.dto;
 
 public class FeedMessageDTO {
     private String title;
+    private String link;
     private String content;
     private String publishedDate;
 
@@ -27,5 +28,13 @@ public class FeedMessageDTO {
 
     public void setPublishedDate(String publishedDate) {
         this.publishedDate = publishedDate;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
     }
 }
