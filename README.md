@@ -1,7 +1,7 @@
 # rss2line-sender
 A LINE Bot which retrieves Google Alerts' RSS feeds periodically (every hour) and sends feeds information to LINE user.
 
-#### Technologies Used
+### Technologies Used
 Spring Framework(Spring Boot, Spring Scheduler), LINE Messaging API
 
 
