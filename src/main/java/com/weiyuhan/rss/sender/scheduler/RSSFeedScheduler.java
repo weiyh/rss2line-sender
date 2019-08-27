@@ -41,7 +41,6 @@ public class RSSFeedScheduler {
         feedMessageDTOs.addAll(rssFeedService.parseRSSFeed(URL_3));
         feedMessageDTOs.addAll(rssFeedService.parseRSSFeed(URL_4));
 
-        lineService.pushText(UUID, "rssFeed: " + DateUtil.formatDateToString(new Date()));
         if (hasNewFeedMessage(feedMessageDTOs)) {
             for (FeedMessageDTO feedMessageDTO : feedMessageDTOs) {
                 String message = generateMessage(feedMessageDTO);
@@ -52,10 +51,10 @@ public class RSSFeedScheduler {
 
     private String generateMessage(FeedMessageDTO feedMessageDTO) {
         StringBuilder messageBuilder = new StringBuilder();
-        messageBuilder.append("Title: ").append(feedMessageDTO.getTitle()).append("\n")
+        messageBuilder.append("【").append(feedMessageDTO.getTitle()).append("】\n")
                 .append("Time: ").append(feedMessageDTO.getPublishedDate()).append("\n")
                 .append("Content: ").append(feedMessageDTO.getContent()).append("\n")
-                .append("Link:: ").append(feedMessageDTO.getContent()).append("\n");
+                .append("Link: ").append(feedMessageDTO.getLink()).append("\n");
         return messageBuilder.toString();
     }
 

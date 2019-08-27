@@ -1,17 +1,22 @@
 package com.weiyuhan.rss.sender.util;
 
+import com.sun.xml.internal.stream.events.StartElementEvent;
 import com.weiyuhan.rss.sender.dto.FeedMessageDTO;
 
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Characters;
 import javax.xml.stream.events.XMLEvent;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 public class RSSFeedParser {
@@ -36,29 +41,33 @@ public class RSSFeedParser {
 
                 if (event.isStartElement()) {
                     String localPart = event.asStartElement().getName().getLocalPart();
-                    String characterData = getCharacterData(event, eventReader);
                     switch (localPart) {
                         case ENTRY:
                             feedMessageDTO = new FeedMessageDTO();
                             break;
                         case TITLE:
-                            feedMessageDTO.setTitle(characterData);
-//                            appendBoldStringToPreviousString(event, eventReader, feedMessageDTO);
+                            feedMessageDTO.setTitle(getCharacterData(event, eventReader));
                             break;
                         case LINK:
-                            feedMessageDTO.setLink(characterData);
+                            feedMessageDTO.setLink(getLinkCharacterData(event));
+                            break;
                         case PUBLISHED_DATE:
-                            feedMessageDTO.setPublishedDate(characterData);
+                            try {
+                                Date publishedDate = DateUtil.addHourOffsetToDate(DateUtil.parseToDate(getCharacterData(event, eventReader)), 8);
+                                feedMessageDTO.setPublishedDate(DateUtil.formatDateToString(publishedDate));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                             break;
                         case CONTENT:
-                            feedMessageDTO.setContent(characterData);
-//                            appendBoldStringToPreviousString(event, eventReader, feedMessageDTO);
+                            feedMessageDTO.setContent(getCharacterData(event, eventReader));
                             break;
                     }
                 } else if (event.isEndElement()) {
                     if (event.asEndElement().getName().getLocalPart() == (ENTRY)) {
                         FeedMessageDTO feedMessageDTOtoSave = new FeedMessageDTO();
                         feedMessageDTOtoSave.setTitle(feedMessageDTO.getTitle());
+                        feedMessageDTOtoSave.setLink(feedMessageDTO.getLink());
                         feedMessageDTOtoSave.setPublishedDate(feedMessageDTO.getPublishedDate());
                         feedMessageDTOtoSave.setContent(feedMessageDTO.getContent());
                         feedMessageDTOs.add(feedMessageDTOtoSave);
@@ -83,6 +92,15 @@ public class RSSFeedParser {
         return result;
     }
 
+    private String getLinkCharacterData(XMLEvent event) throws XMLStreamException {
+        String result = "";
+        Iterator<Attribute> attributeIterator = ((StartElementEvent) event).getAttributes();
+        while (attributeIterator.hasNext()) {
+            result = attributeIterator.next().getValue();
+        }
+        return result;
+    }
+
     private InputStream read(URL url) {
         try {
             return url.openStream();
@@ -90,37 +108,4 @@ public class RSSFeedParser {
             throw new RuntimeException(e);
         }
     }
-
-    /*
-        This method is to append the string between and after <b>...</b> to previous string.
-        For example A<b>B</b> will be AB.
-     */
-//    private void appendBoldStringToPreviousString(XMLEvent event, XMLEventReader eventReader, FeedMessageDTO feedMessageDTO) {
-//        try {
-//            StringBuilder boldString = new StringBuilder();
-//            while (eventReader.hasNext() && !event.isEndElement()) {
-//                if (eventReader.nextEvent().getEventType() == 4) {
-//                    if (getCharacterData(event, eventReader) == "<"
-//                            || getCharacterData(event, eventReader) == "b"
-//                            || getCharacterData(event, eventReader) == "/>") {
-//                        event = eventReader.nextEvent();
-//                        continue;
-//                    }
-//                    boldString.append(getCharacterData(event, eventReader));
-//                }
-//                event = eventReader.nextEvent();
-//            }
-//            String localPart = event.asEndElement().getName().getLocalPart();
-//            switch (localPart) {
-//                case TITLE:
-//                    feedMessageDTO.setTitle(boldString.insert(0, feedMessageDTO.getTitle()).toString());
-//                    break;
-//                case CONTENT:
-//                    feedMessageDTO.setContent(boldString.insert(0, feedMessageDTO.getContent()).toString());
-//                    break;
-//            }
-//        } catch (XMLStreamException e) {
-//            throw new RuntimeException(e);
-//        }
-//    }
 }

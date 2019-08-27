@@ -1,7 +1,6 @@
 package com.weiyuhan.rss.sender.scheduler;
 
 import com.weiyuhan.rss.sender.service.LineService;
-import com.weiyuhan.rss.sender.util.DateUtil;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -16,7 +15,6 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.Date;
 
 @Component
 public class KeepHerokuAliveScheduler {
@@ -38,6 +36,5 @@ public class KeepHerokuAliveScheduler {
         HttpResponse response = httpClient.execute(get);
         String body = EntityUtils.toString(response.getEntity(), "UTF-8");
         logger.info(body);
-        lineService.pushText(UUID, "heroku.alive: " + DateUtil.formatDateToString(new Date()));
     }
 }
